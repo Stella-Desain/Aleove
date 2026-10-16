@@ -133,6 +133,7 @@
     audio.volume = 0.7;
     soundBtn.hidden = false;
     soundBtn.classList.add("is-off");
+    soundBtn.addEventListener("pointerdown", function (e) { e.stopPropagation(); });
     soundBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       if (audio.paused) { audio.play().catch(function () {}); soundBtn.classList.remove("is-off"); }

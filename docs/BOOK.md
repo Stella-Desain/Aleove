@@ -4,11 +4,11 @@ Modul buku dibuat terpisah. Dokumen ini menjelaskan cara modul itu terhubung den
 
 ## File yang menjadi milik modul buku
 
-- `js/book.js` dan `css/book.css`: saat ini placeholder, ganti seluruh isinya.
-- Data buku: objek `book` di `js/config.js` (foto sampul, halaman, teks penutup, dan teks petunjuk). Boleh ditambah field baru.
-- Foto: `assets/photos/` (saat ini placeholder `foto-1.svg`…`foto-4.svg`).
+- `js/book.js` dan `css/book.css`: buku DK401 yang sudah dipasang, dengan tujuh lembar, efek 3D, dan dua tombol panah.
+- Data buku: objek `book` di `js/config.js` (`title`, delapan gambar `artwork`, tiga catatan `notes`, serta sumber dan poster `video`).
+- Aset buku: `assets/book/`; gambar, video 8 detik, poster, dan font yang dipakai berasal dari folder `dariku-dk401` yang diberikan pengguna.
 
-Semua file lain sebaiknya tidak diubah: `index.html`, `css/base.css`, `js/core.js`, `js/main.js`, `js/sky.js`, `js/flower.js`, `js/letter.js`, `js/gift.js`. `index.html` sudah memuat `css/book.css` dan `js/book.js`.
+`index.html` sudah memuat `css/book.css` dan `js/book.js`. Latar, efek kado, dan alur Aleove tetap dikelola modul masing-masing; CSS buku memakai prefix `.bk-`.
 
 ## Alur
 
@@ -27,10 +27,10 @@ Aleove.registerScene("book", {
 
 ## Yang tersedia
 
-- `ctx.config.book`: data buku dari `js/config.js`. Escape teks dengan `Aleove.esc(str)`.
+- `ctx.config.book`: data buku dari `js/config.js`. Catatan pribadi dipasang melalui `textContent`.
 - `gsap` 3.15, `DrawSVGPlugin`, `MotionPathPlugin`, dan `CustomEase` sudah global dan teregistrasi. Jangan memuat apa pun dari internet.
 - Token warna dan font ada di `css/base.css` (`--f-serif`, `--f-script`, `--f-sans`, `--ink`, `--ice`, `--blue`, `--paper`, dll).
-- `html, body` memakai `touch-action: none`, dan event wheel global di-`preventDefault`. Swipe horizontal di buku harus ditangani sendiri dengan pointer/touch events. Elemen yang perlu scroll diberi `data-allow-scroll`.
+- `html, body` memakai `touch-action: none`, dan event wheel global di-`preventDefault`. Buku mendukung tombol panah, keyboard kiri/kanan, dan swipe horizontal. Surat menyesuaikan ukuran teks dengan layar dan tidak memakai area scroll.
 - Latar langit (bintang dan komet) digambar di kanvas di belakang. Slot buku harus transparan.
 - Prefix class `.bk-` supaya tidak bentrok.
 
@@ -38,3 +38,8 @@ Aleove.registerScene("book", {
 
 - `index.html?scene=gift` langsung membuka stasiun kado. Pilih kado mana saja dan buku akan muncul.
 - `&speed=3` mempercepat semua animasi GSAP.
+- Tombol kanan membuka buku; tombol kiri kembali sampai sampul depan. Halaman video hanya diputar saat bentangan kelima sedang terlihat dan tab aktif.
+
+## Sumber aset
+
+Desain halaman, gambar, dan bentuk tombol berasal dari tema DK401 — Dariku / Deka Tutorial, melalui salinan lokal pengguna di `dariku-dk401`. Hanya komponen buku, catatan, video, dan navigasinya yang diambil. Musik latar memakai URL yang sama dengan salinan tersebut: Andmesh — Anugerah Terindah. Kontrol musik Aleove tetap tersedia.

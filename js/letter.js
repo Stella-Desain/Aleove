@@ -290,7 +290,7 @@
               '<span class="lt-frame" aria-hidden="true"></span>' +
               ornSVG() +
               '<div class="lt-head"><p class="lt-to">' + esc(c.to) + "</p>" + markSVG() + "</div>" +
-              '<div class="lt-body" data-allow-scroll>' +
+              '<div class="lt-body">' +
                 body.map(function (p) { return "<p>" + splitWords(p) + "</p>"; }).join("") +
               "</div>" +
               '<p class="lt-sign">' + esc(c.signature) + "</p>" +
@@ -354,6 +354,7 @@
       markLine: q(".lt-mark-line"),
       markStars: qa(".lt-mark-star"),
       body: q(".lt-body"),
+      content: q(".lt-content"),
       paras: qa(".lt-body p"),
       words: qa(".lt-w"),
       sign: q(".lt-sign"),
@@ -402,6 +403,8 @@
     R.rocket.disabled = true;
     R.envelope.addEventListener("click", onEnvelope);
     R.rocket.addEventListener("click", onRocket);
+    fitLetter();
+    new ResizeObserver(fitLetter).observe(R.read);
   }
 
   /* ---------------- fase 1: amplop jatuh melayang ---------------- */
@@ -521,11 +524,29 @@
     if (S.intro) S.intro.kill();
     stopIdle();
     gsap.set(R.sheenBand, { opacity: 0 });
+    fitLetter();
     if (S.ctx.reducedMotion) openReduced();
     else openEnvelope();
   }
 
+  // Semua isi surat tetap terbaca tanpa area scroll, termasuk setelah rotasi layar.
+  function fitLetter() {
+    const available = R.read.clientHeight;
+    if (!available) return;
+    R.letter.style.setProperty("--lt-fit", "1");
+    if (R.content.scrollHeight <= available) return;
+    let low = 0.45, high = 1;
+    for (let step = 0; step < 9; step++) {
+      const mid = (low + high) / 2;
+      R.letter.style.setProperty("--lt-fit", mid.toFixed(4));
+      if (R.content.scrollHeight <= available) low = mid;
+      else high = mid;
+    }
+    R.letter.style.setProperty("--lt-fit", low.toFixed(4));
+  }
+
   function measureLetter() {
+    fitLetter();
     gsap.set(R.letter, { clearProps: "transform" });
     return R.letter.getBoundingClientRect();
   }
@@ -617,7 +638,6 @@
     gsap.set(R.letter, { transformOrigin: "0 0", x: sr.left - L.left, y: sr.top - L.top, scaleX: sx, scaleY: sy, autoAlpha: 1 });
     gsap.set(R.sheet, { autoAlpha: 0 });
 
-    R.body.classList.toggle("is-scroll", R.body.scrollHeight > R.body.clientHeight + 2);
 
     const tl = gsap.timeline();
     S.readTl = tl;
@@ -709,7 +729,6 @@
     tl.to(R.words, { opacity: 1, duration: 0.8 }, 1.2);
     tl.to(R.sign, { opacity: 1, duration: 0.6 }, 1.8);
     tl.call(function () {
-      R.body.classList.toggle("is-scroll", R.body.scrollHeight > R.body.clientHeight + 2);
       gsap.delayedCall(3, showRocket);
     }, null, 2.4);
   }

@@ -5,56 +5,57 @@
 window.ALEOVE_CONFIG = {
   /* ---------- Scene 1: bunga ---------- */
   flower: {
-    caption: "untukmu, di bawah langit yang sama", // teks kecil di bawah bunga (kosongkan "" jika tidak mau)
+    caption: "Untuk kekasih ku tersayang, Afifatul Hanifah", // teks kecil di bawah bunga (kosongkan "" jika tidak mau)
     scrollHint: "scroll ke atas"
   },
 
   /* ---------- Scene 2: surat ---------- */
   letter: {
-    prompt: "tolong di buka sayang.",
+    prompt: "untuk ayang akuuu",
     tapHint: "ketuk suratnya",
-    to: "Untuk kamu,",
+    to: "for my little beby, alee.",
     // Tiap item = satu paragraf. Bebas diganti.
     body: [
-      "Kalau kamu sedang membaca ini, berarti suratku sudah sampai — melewati bintang-bintang, satu komet, dan sedikit rasa gugup.",
-      "Aku cuma mau bilang: terima kasih sudah jadi tempat paling tenang di semesta kecilku. Hari-hariku lebih terang sejak ada kamu.",
-      "Teks ini masih sementara, nanti aku ganti dengan kata-kata yang lebih pantas buat kamu."
+      "TADAAAAA, ini hadiah special yang udah aku rencanain buat kasih kamu di anniversary kita nanti, Tapi kek nya hadiah ini harus datang duluan deh. :)))",
+      "Ma aciwww ya udah jadi tempat paling tenang di semesta kecilku. Setiap bangun tidur aku selalu bangun dengan semangat mau nikahin Afifah secepatnya.",
+      "Ini aku bikin sebagai tanda bahwa kamu ber arti bangt buat aku."
     ],
-    signature: "— yang selalu sayang kamu",
+    signature: "dari you boy, Kyuu",
     rocketHint: "tekan roketnya"
   },
 
   /* ---------- Scene 3: kado & buku ---------- */
   gift: {
     prompt: "Pilih satu kado, yang mana aja.",
-    subPrompt: "semuanya isinya sama kok, hehe",
+    subPrompt: "PILIH HADIAH NYAA BEBYYY.",
     openHint: "ketuk untuk membuka"
   },
 
   book: {
-    cover: {
-      // 3 foto polaroid di sampul (urutan: atas, tengah, bawah)
-      photos: [
-        "assets/photos/foto-1.svg",
-        "assets/photos/foto-2.svg",
-        "assets/photos/foto-3.svg"
-      ],
-      kicker: "HAPPY",
-      title: "Special Day"
-    },
-    // Halaman isi buku. Setiap halaman: foto + judul + teks pendek.
-    pages: [
-      { photo: "assets/photos/foto-1.svg", title: "Awal cerita", text: "Hari pertama kita bertemu. Aku masih ingat semuanya." },
-      { photo: "assets/photos/foto-2.svg", title: "Tawa kecil", text: "Momen sederhana yang ternyata paling sering aku putar ulang." },
-      { photo: "assets/photos/foto-3.svg", title: "Perjalanan", text: "Ke mana pun, asal sama kamu, rasanya selalu pulang." },
-      { photo: "assets/photos/foto-4.svg", title: "Hari ini", text: "Dan hari ini, aku cuma mau bilang: selamat hari spesial, sayang." }
+    "title": "From: Your Boys",
+    "artwork": [
+      "assets/book/p0-from-your-boys.png",
+      "assets/book/p1-love-you-white.png",
+      "assets/book/p2-cerita-bunga.png",
+      "assets/book/p3-kenangan-bersama.png",
+      "assets/book/p4-sehat-selalu.png",
+      "assets/book/p5-video-kenangan.png",
+      "assets/book/p6-special-memories.png",
+      "assets/book/p7.webp"
     ],
-    endText: "Terima kasih sudah jadi bintangku.",
-    navHint: "geser halaman"
+    "notes": {
+      "flowers": "Hari dimana hati ku lagi ga enak, tapi aku nggak tau kenapa pengen bngt tuntasin janji ngasih bunga ini ke kamu. mulai dari cium bunga satu satu, tanya sana sini, kartu ucapan hilang, pulang-balik ket toko bunga, minta anterin bang grab. walau nggak berjalan sesuai rencana aku TETAPPP HAPPY, walau nggak keliatan depan kamu 🤭",
+      "memories": "Sudah banyak yang kita lalui bersama Jalan-jalan, makan coto, pergi ke mall dan banyakkkk lagi, makasih yaaa. ini berti banget buat aku. mungkin aku akan cetak buku ini buat kenang-kenangan. ❤️",
+      "special": "Maaf buat perilaku aku yang nyakitin beby, maaf selalu juga selalu teledor. Aku pengen kamu tau, I'm so lucky have you. Jangan bosen sama aku, jangan jauh sama aku, tełep sama aku yaaa."
+    },
+    "video": {
+      "src": "assets/book/IMG_9467-first-8s.mp4",
+      "poster": "assets/book/IMG_9467-poster.jpg"
+    }
   },
 
   /* ---------- Musik (opsional) ----------
      Isi dengan path file mp3, mis. "assets/music.mp3". Kosongkan "" untuk tanpa musik.
      Musik mulai saat pengguna pertama kali menyentuh/scroll (aturan browser). */
-  music: ""
+  music: "https://dekatutorial.github.io/musik/ANDMESH%20-%20ANUGERAH%20TERINDAH%20-%20VIDEO%20LIRIK%20-%20LIRIK%20LAGU%20TERBARU.mp3"
 };

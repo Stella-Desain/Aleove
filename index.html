@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#03050c" />
+  <title>Aleove</title>
+  <meta name="description" content="Sebuah hadiah kecil di bawah langit berbintang." />
+
+  <link rel="preload" href="fonts/cormorant-garamond-latin-500-italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/great-vibes-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/jost-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/flower.css" />
+  <link rel="stylesheet" href="css/letter.css" />
+  <link rel="stylesheet" href="css/gift.css" />
+</head>
+<body>
+  <!-- Langit: kanvas bintang + komet (fixed, parallax mengikuti kamera) -->
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div id="sky-tint" aria-hidden="true"></div>
+
+  <!-- Dunia: 3 stasiun ditumpuk vertikal, kamera menggeser #world -->
+  <main id="stage">
+    <div id="world">
+      <section class="station" id="st-flower" style="--i:0" aria-label="Bunga"></section>
+      <section class="station" id="st-letter" style="--i:1" aria-label="Surat"></section>
+      <section class="station" id="st-gift"   style="--i:2" aria-label="Hadiah"></section>
+    </div>
+  </main>
+
+  <!-- Lapisan efek di atas segalanya (mis. roket yang terbang ikut kamera) -->
+  <div id="fx" aria-hidden="true"></div>
+
+  <button id="sound" class="sound-btn" type="button" aria-label="Musik" hidden>
+    <span class="sound-bars"><i></i><i></i><i></i></span>
+  </button>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/DrawSVGPlugin.min.js"></script>
+  <script src="vendor/MotionPathPlugin.min.js"></script>
+  <script src="vendor/CustomEase.min.js"></script>
+
+  <!-- Semua teks & foto bisa diubah di sini -->
+  <script src="js/config.js"></script>
+
+  <script src="js/core.js"></script>
+  <script src="js/sky.js"></script>
+  <script src="js/flower.js"></script>
+  <script src="js/letter.js"></script>
+  <script src="js/gift.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

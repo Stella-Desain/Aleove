@@ -1,1 +1,415 @@
-/* gift — placeholder, akan diganti */
+/* ==========================================================================
+   gift — Scene 3: empat kado di bawah langit (prefix .gf-)
+   Lapisan di #st-gift (z-index): .gf-halo (0) · .gf-fx sinar (0) · .gf-book-slot (0 saat keluar
+   dari kotak → 4) · .gf-stage teks & kado (1) · .gf-sparks kilat, inti cahaya & partikel (5)
+   ========================================================================== */
+
+#st-gift {
+  --gf-bw: min(32vw, 150px, 19svh);          /* lebar satu kotak */
+  --gf-gap-x: calc(var(--gf-bw) * 0.4);
+  --gf-gap-y: calc(var(--gf-bw) * 0.3);
+}
+
+.gf-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* nebula lembut di belakang kado */
+.gf-nebula {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  top: 8%;
+  width: min(150vw, 1100px);
+  height: min(120svh, 900px);
+  pointer-events: none;
+  background:
+    radial-gradient(42% 30% at 50% 54%, rgba(47, 111, 214, 0.2), transparent 70%),
+    radial-gradient(26% 20% at 36% 44%, rgba(138, 232, 255, 0.07), transparent 70%),
+    radial-gradient(30% 24% at 66% 62%, rgba(130, 100, 230, 0.09), transparent 70%);
+}
+
+/* ---------------- teks ---------------- */
+.gf-head {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(env(safe-area-inset-top, 0px) + clamp(52px, 10.5svh, 116px));
+  padding: 0 22px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.gf-prompt {
+  margin: 0 auto;
+  max-width: 12.5em;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(30px, 8.2vw, 58px);
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+  text-shadow: 0 0 28px rgba(138, 232, 255, 0.22), 0 1px 0 rgba(2, 4, 10, 0.4);
+}
+.gf-w { display: inline-block; will-change: transform, opacity; }
+
+.gf-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: clamp(12px, 2svh, 18px) auto clamp(10px, 1.6svh, 14px);
+}
+.gf-rule i {
+  display: block;
+  width: clamp(36px, 10vw, 64px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214, 236, 255, 0.55));
+  transform-origin: 100% 50%;
+}
+.gf-rule i:last-child {
+  background: linear-gradient(270deg, transparent, rgba(214, 236, 255, 0.55));
+  transform-origin: 0% 50%;
+}
+.gf-rule-star {
+  display: block;
+  width: 11px;
+  height: 11px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 5px rgba(243, 211, 138, 0.7));
+}
+.gf-rule-star svg { display: block; width: 100%; height: 100%; }
+
+.gf-sub {
+  margin: 0;
+  color: rgba(234, 244, 255, 0.5);
+  white-space: nowrap;
+}
+
+.gf-open {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(28px, 7svh, 72px));
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ---------------- area kado ---------------- */
+.gf-field {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 56.5%;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gf-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(98vw, calc(var(--gf-bw) * 4.2));
+  height: min(98vw, calc(var(--gf-bw) * 4.2));
+  margin-left: calc(min(98vw, calc(var(--gf-bw) * 4.2)) / -2);
+  margin-top: calc(min(98vw, calc(var(--gf-bw) * 4.2)) / -2);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.gf-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, var(--gf-bw));
+  column-gap: var(--gf-gap-x);
+  row-gap: var(--gf-gap-y);
+  /* bayangan kotak atas tidak bertabrakan dengan kotak bawah */
+  padding-top: calc(var(--gf-bw) * 0.04);
+}
+
+/* ---------------- satu kotak ---------------- */
+.gf-box {
+  position: relative;
+  display: block;
+  width: var(--gf-bw);
+  aspect-ratio: 120 / 126;
+  border-radius: 10px;
+  touch-action: manipulation;
+  will-change: transform, opacity;
+}
+.gf-box:focus-visible { outline-offset: 8px; border-radius: 14px; }
+
+.gf-float,
+.gf-hov,
+.gf-shake,
+.gf-squash {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.gf-float { will-change: transform; }
+
+.gf-hov {
+  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+@media (hover: hover) {
+  .gf-box:hover .gf-hov { transform: translateY(-4px) scale(1.05); }
+}
+.gf-box:active .gf-hov {
+  transform: scale(0.94);
+  transition-duration: 0.12s;
+  transition-timing-function: ease-out;
+}
+.gf-grid.is-picked { pointer-events: none; }
+.gf-grid.is-picked .gf-hov { transform: none; transition: transform 0.35s ease-out; }
+
+/* bayangan lembut di "lantai" (diam saat kotak melayang) */
+.gf-shadow {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -9%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(1, 3, 12, 0.55), rgba(10, 30, 80, 0.25) 55%, transparent);
+  pointer-events: none;
+}
+
+/* halo di belakang kotak */
+.gf-glow {
+  position: absolute;
+  inset: -34% -34% -30%;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(111, 180, 255, 0.3), rgba(138, 232, 255, 0.1) 55%, transparent);
+  pointer-events: none;
+}
+.gf-box--ice .gf-glow {
+  background: radial-gradient(closest-side, rgba(214, 236, 255, 0.28), rgba(111, 180, 255, 0.1) 55%, transparent);
+}
+
+.gf-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+.gf-svg-body { filter: drop-shadow(0 8px 14px rgba(1, 4, 15, 0.45)); }
+.gf-box--navy .gf-svg-body { filter: drop-shadow(0 8px 14px rgba(1, 4, 15, 0.55)) drop-shadow(0 0 1px rgba(138, 232, 255, 0.5)); }
+
+.gf-lid {
+  position: absolute;
+  inset: 0;
+  display: block;
+  will-change: transform;
+}
+.gf-svg-lid { filter: drop-shadow(0 3px 4px rgba(1, 4, 15, 0.3)); }
+
+/* kilau bintang kecil di pita */
+.gf-glint {
+  position: absolute;
+  left: 63%;
+  top: 4%;
+  width: 17%;
+  aspect-ratio: 1;
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+  pointer-events: none;
+}
+.gf-glint svg { display: block; width: 100%; height: 100%; }
+
+/* sapuan kilau di badan kotak (sekali saat mendarat) */
+.gf-sheen {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 38.1%;
+  bottom: 3.2%;
+  display: block;
+  overflow: hidden;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.gf-sheen i {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 34%;
+  display: block;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  mix-blend-mode: screen;
+}
+
+/* celah bercahaya antara tutup & badan (antisipasi) */
+.gf-seam {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: calc(41.3% - 2px);
+  height: 4px;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #fffaf0, rgba(255, 242, 194, 0.85) 40%, rgba(138, 232, 255, 0));
+  box-shadow: 0 0 10px 2px rgba(255, 242, 194, 0.55), 0 0 22px 6px rgba(138, 232, 255, 0.25);
+  pointer-events: none;
+}
+
+/* cahaya dari dalam kotak setelah tutup terbuka */
+.gf-mouth {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 26%;
+  height: 24%;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #fffaf0, rgba(255, 242, 194, 0.75) 35%, rgba(138, 232, 255, 0.18) 70%, transparent);
+  pointer-events: none;
+}
+
+/* ---------------- ledakan cahaya ---------------- */
+.gf-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gf-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(circle at var(--ox, 50%) var(--oy, 50%),
+    rgba(255, 250, 236, 0.9) 0, rgba(214, 236, 255, 0.4) 22%, rgba(111, 180, 255, 0.12) 48%, transparent 75%);
+}
+
+.gf-raysw {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+.gf-rays {
+  position: absolute;
+  width: 170vmax;
+  height: 170vmax;
+  left: -85vmax;
+  top: -85vmax;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(closest-side, #000 3%, rgba(0, 0, 0, 0.5) 22%, transparent 62%);
+  mask-image: radial-gradient(closest-side, #000 3%, rgba(0, 0, 0, 0.5) 22%, transparent 62%);
+}
+
+.gf-core {
+  --s: min(78vmin, 560px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(closest-side,
+    #ffffff 0, rgba(255, 250, 232, 0.95) 9%, rgba(255, 236, 190, 0.5) 22%,
+    rgba(138, 232, 255, 0.16) 46%, transparent);
+}
+
+.gf-beam {
+  position: absolute;
+  opacity: 0;
+  background: linear-gradient(0deg, rgba(255, 248, 228, 0.8), rgba(214, 236, 255, 0.28) 45%, transparent 92%);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 34%, #000 66%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 34%, #000 66%, transparent);
+}
+
+/* partikel bintang */
+.gf-sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+.gf-pfield {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+.gf-p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.gf-p.is-dot {
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0, var(--c) 38%, transparent 72%);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--c) 55%, transparent);
+}
+.gf-p.is-star {
+  background: var(--c);
+  clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%);
+}
+
+/* ---------------- serah-terima ke buku ---------------- */
+.gf-halo {
+  --s: min(130vmin, 980px);
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(closest-side,
+    rgba(255, 242, 194, 0.12) 0, rgba(111, 180, 255, 0.2) 26%, rgba(47, 111, 214, 0.1) 55%, transparent);
+}
+
+/* slot layar penuh untuk modul buku (lihat docs/BOOK.md); transparan.
+   Sengaja polos: tata letak isi sepenuhnya milik modul buku. */
+.gf-book-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+/* hanya untuk placeholder bawaan js/book.js (tidak berlaku untuk buku asli) */
+.gf-book-slot > .bk-placeholder {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+}
+
+/* layar pendek (HP mendatar) */
+@media (max-height: 520px) {
+  .gf-head { top: calc(env(safe-area-inset-top, 0px) + 14px); }
+  .gf-prompt { font-size: clamp(24px, 6.4svh, 30px); max-width: none; }
+  .gf-rule { margin: 6px auto 6px; }
+  .gf-field { top: 61%; }
+  .gf-open { bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gf-hov { transition: none; }
+}

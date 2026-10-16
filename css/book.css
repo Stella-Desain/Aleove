@@ -1,0 +1,16 @@
+/* book — placeholder. Modul buku dibuat terpisah; lihat docs/BOOK.md */
+.bk-placeholder {
+  width: min(78vw, 320px);
+  aspect-ratio: 1 / 1.42;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(160deg, #e9e2d4, #c9bba4);
+  color: #3a2a22;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 60px rgba(138, 232, 255, 0.15);
+}

@@ -1,1 +1,201 @@
-/* flower — placeholder, akan diganti */
+/* ==========================================================================
+   Scene 1 — Bunga (pembuka)
+   Kotak .fl-box memakai rasio viewBox 440×640; pangkal tanaman berada di
+   96.875% tinggi kotak. Semua layer di dalamnya berbagi ruang yang sama.
+   ========================================================================== */
+
+.fl-scene {
+  --fl-h: min(66svh, 150vw, 68vh);
+  --fl-base: 11svh;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fl-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- panggung tanaman ---------- */
+.fl-box {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--fl-base) - var(--fl-h) * 0.03125 + env(safe-area-inset-bottom) * 0.5);
+  height: var(--fl-h);
+  aspect-ratio: 440 / 640;
+  transform: translateX(-50%);
+}
+
+.fl-sway,
+.fl-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.fl-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* halo hangat besar di belakang tiap bunga */
+.fl-halo {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    rgba(255, 246, 210, 0.85) 0%,
+    rgba(255, 238, 176, 0.46) 13%,
+    rgba(255, 236, 180, 0.2) 30%,
+    rgba(226, 232, 245, 0.075) 52%,
+    rgba(190, 215, 255, 0.025) 72%,
+    rgba(190, 215, 255, 0) 100%);
+  will-change: transform, opacity;
+}
+
+/* kilau hangat yang tumpah dari inti ke kelopak */
+.fl-glint {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    rgba(255, 252, 236, 0.85) 0%,
+    rgba(255, 242, 194, 0.42) 22%,
+    rgba(255, 236, 170, 0.12) 52%,
+    rgba(255, 236, 170, 0) 100%);
+  will-change: transform, opacity;
+}
+
+/* kabut cahaya tipis di pangkal */
+.fl-fog {
+  position: absolute;
+  left: 50%;
+  top: 96.875%;
+  width: 150%;
+  aspect-ratio: 3.4 / 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(150, 205, 255, 0.16), rgba(80, 140, 230, 0.07) 55%, rgba(60, 110, 220, 0) 100%);
+}
+
+/* titik cahaya di pangkal (yang pertama menyala) */
+.fl-baselight {
+  position: absolute;
+  left: 50%;
+  top: 96.875%;
+  width: 22%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(214, 240, 255, 0.85) 8%,
+    rgba(138, 232, 255, 0.32) 26%,
+    rgba(111, 180, 255, 0.1) 52%,
+    rgba(111, 180, 255, 0) 100%);
+}
+
+.fl-sparks {
+  position: absolute;
+  left: -20%;
+  top: -24%;
+  width: 140%;
+  height: 126%;
+}
+
+/* ---------- caption ---------- */
+.fl-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(clamp(18px, 4.2svh, 44px) + env(safe-area-inset-bottom));
+  margin: 0 auto;
+  padding: 0 24px;
+  max-width: 34em;
+  text-align: center;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(17px, 1.1rem + 0.5vmin, 23px);
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  color: var(--ink-dim);
+  text-shadow: 0 0 18px rgba(143, 196, 255, 0.25);
+}
+
+/* ---------- panah "scroll ke atas" ---------- */
+.fl-up {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + clamp(14px, 3.2svh, 36px));
+  left: 0;
+  right: 0;
+  width: max-content;
+  margin: 0 auto;
+  padding: 8px 22px 10px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  pointer-events: auto;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.fl-up-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fl-up-chev {
+  display: block;
+  width: 15px;
+  height: 9px;
+  margin-bottom: -1px;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(138, 232, 255, 0.75));
+}
+.fl-up-chev polyline {
+  fill: none;
+  stroke: var(--ice);
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fl-up-track {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: clamp(46px, 7.4svh, 70px);
+  overflow: hidden;
+  background: linear-gradient(to top, rgba(214, 236, 255, 0), rgba(214, 236, 255, 0.42) 70%, rgba(214, 236, 255, 0.7));
+}
+.fl-up-line { display: none; }
+.fl-up-flow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 45%;
+  background: linear-gradient(to top, rgba(138, 232, 255, 0), #ffffff 80%, rgba(255, 255, 255, 0.4));
+  box-shadow: 0 0 6px 1px rgba(138, 232, 255, 0.7);
+}
+
+.fl-up-hint {
+  display: block;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  padding-left: 0.32em; /* imbangi letter-spacing supaya tetap di tengah */
+  text-shadow: 0 0 12px rgba(111, 180, 255, 0.35);
+}
+
+.fl-up:hover .fl-up-hint,
+.fl-up:focus-visible .fl-up-hint { color: var(--ink); }
+
+/* layar lebar: rumpun sedikit lebih kecil relatif tinggi layar */
+@media (min-aspect-ratio: 4/3) {
+  .fl-scene { --fl-h: min(64vh, 640px); --fl-base: 10vh; }
+}

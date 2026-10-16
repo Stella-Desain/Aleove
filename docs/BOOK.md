@@ -43,3 +43,7 @@ Aleove.registerScene("book", {
 ## Sumber aset
 
 Desain halaman, gambar, dan bentuk tombol berasal dari tema DK401 — Dariku / Deka Tutorial, melalui salinan lokal pengguna di `dariku-dk401`. Hanya komponen buku, catatan, video, dan navigasinya yang diambil. Musik latar memakai URL yang sama dengan salinan tersebut: Andmesh — Anugerah Terindah. Kontrol musik Aleove tetap tersedia.
+
+## Deployment dan cache
+
+Setiap push ke `main` menjalankan `.github/workflows/pages.yml`. Script `scripts/build-pages.mjs` membuat `work/pages/` dengan URL aset berdasarkan hash kontennya, termasuk gambar buku, font, CSS, dan konfigurasi. File sumber tetap memakai path biasa; URL berversi hanya dibuat pada hasil deployment. Meta `aleove-version` pada HTML hasil build mencatat commit yang ditayangkan.
